@@ -1,29 +1,64 @@
+const Bootcamp = require('../models/Bootcamp')
+
+
 //  @descripcion        Muestra todos los bootcamps
 //  @ruta / route       GET api/vi/bootcamps
 //  @acceso             Publica
-exports.getBootcamps = (req, res, next) => {
-    res
-    .status(200)
-    .json({ exito: true, msj: 'Mostrar todos los bootcamps', hello: req.hello });
+exports.getBootcamps = async (req, res, next) => {
+    try {
+        const bootcamp = await Bootcamp.find();
+
+        res
+        .status(200)
+        .json({
+            success: true,
+            data: bootcamp
+        })
+    } catch (error) {
+        res
+        .status(400)
+        .json({
+            success: false,
+            data: error
+        })
+    }
 }
 
 //  @descripcion        Muestra un solo bootcamp
 //  @ruta / route       GET api/vi/bootcamps/:id
 //  @acceso             Publica
-exports.getBootcamp = (req, res, next) => {
-    const { id } = req.params
-    res
-    .status(200)
-    .json({ exito: true, msj: `Mostrar bootcamp ${id}` });
+exports.getBootcamp = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const bootcamp = await Bootcamp.findById(id)
+        res
+        .status(200)
+        .json({
+            success: true,
+            data: bootcamp
+        })
+
+    } catch (error) {
+        res
+        .status(400)
+        .json({
+            success: false,
+            data: error
+        })
+    }
 }
 
 //  @descripcion        Crea un Bootcamp
 //  @ruta / route       POST api/vi/bootcamps
 //  @acceso             Privada
-exports.createBootcamp = (req, res, next) => {
+exports.createBootcamp = async (req, res, next) => {
+    const bootcamp = await Bootcamp.create(req.body);
     res
     .status(201)
-    .json({ exito: true, msj: 'Bootcamp creado!' });
+    .json({
+        success: true,
+        data: bootcamp
+    })
 }
 
 //  @descripcion        Modifica un bootcamp
