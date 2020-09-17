@@ -12,6 +12,7 @@ exports.getBootcamps = async (req, res, next) => {
         .status(200)
         .json({
             success: true,
+            count: bootcamp.length,
             data: bootcamp
         })
     } catch (error) {
@@ -67,19 +68,46 @@ exports.createBootcamp = async (req, res, next) => {
 //  @descripcion        Modifica un bootcamp
 //  @ruta / route       PUT api/vi/bootcamps/:id
 //  @acceso             Privada
-exports.updateBootcamps = (req, res, next) => {
+exports.updateBootcamps = async (req, res, next) => {
     const { id } = req.params;
-    res
-    .status(201)
-    .json({ exito: true, msj: `Se ha modificado el bootcamp ${id}` });
+    try {
+        const bootcamp = await Bootcamp.findByIdAndUpdate(id, req.body, {
+            new: true,
+            runValidators: true
+        });
+        if(!bootcamp){
+            return res.status(400).json({ success: false })
+        }
+    
+        res
+        .status(200)
+        .json({
+            success: true,
+            data: bootcamp
+        })
+    } catch (error) {
+        res.status(400).json({ success: false })
+    }
+
 }
 
 //  @descripcion        Elimina un bootcamp
 //  @ruta / route       DELETE api/vi/bootcamps/:id
 //  @acceso             Privada
-exports.deleteBootcamps = (req, res, next) => {
+exports.deleteBootcamps = async (req, res, next) => {
     const { id } = req.params;
-    res
-    .status(200)
-    .json({ exito: true, msj: `Se ha borrado el bootcamp ${id}` });
+    try {
+        const bootcamp = await Bootcamp.findByIdAndDelete(id);
+        
+        if(!bootcamp){
+            return res.status(400).json({ success: false })
+        }
+        res
+        .status(200)
+        .json({
+            success: true
+        })
+    } catch (error) {
+        res.status(400).json({ success: false })
+    }
 }
