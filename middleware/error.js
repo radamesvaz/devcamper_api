@@ -4,16 +4,16 @@ const errorHandler = (err, req, res, next) => {
     error.message = err.message;
 
     // mostrando error en consola
-    console.log(err.stack.red.bgWhite)
+    console.log(err)
 
     // Mongoose mal ObjectId
-    if(err.name == 'CastError'){
+    if(err.name === 'CastError'){
         const message = `Recurso con id '${err.value}' no encontrado`;
         error = new ErrorResponse(message, 404)
     }
 
     // Mongoose campo duplicado
-    if(err.code = 11000){
+    if(err.code == 11000){
         const message = `El valor del campo ya existe, no puede ser duplicado`;
         error = new ErrorResponse(message, 400)
     }

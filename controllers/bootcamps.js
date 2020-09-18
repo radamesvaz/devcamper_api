@@ -1,14 +1,13 @@
 const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
 const Bootcamp = require('../models/Bootcamp')
 
 
 //  @descripcion        Muestra todos los bootcamps
 //  @ruta / route       GET api/vi/bootcamps
 //  @acceso             Publica
-exports.getBootcamps = async (req, res, next) => {
-    try {
+exports.getBootcamps = asyncHandler( async (req, res, next) => {
         const bootcamp = await Bootcamp.find();
-
         res
         .status(200)
         .json({
@@ -16,17 +15,13 @@ exports.getBootcamps = async (req, res, next) => {
             count: bootcamp.length,
             data: bootcamp
         })
-    } catch (error) {
-        next(error)
-    }
-}
+});
 
 //  @descripcion        Muestra un solo bootcamp
 //  @ruta / route       GET api/vi/bootcamps/:id
 //  @acceso             Publica
-exports.getBootcamp = async (req, res, next) => {
+exports.getBootcamp = asyncHandler( async (req, res, next) => {
     const { id } = req.params;
-    try {
         const bootcamp = await Bootcamp.findById(id)
         if(!bootcamp){
             return next(new ErrorResponse(`Bootcamp no encontrado, id: ${id}`, 404))
@@ -37,17 +32,12 @@ exports.getBootcamp = async (req, res, next) => {
             success: true,
             data: bootcamp
         })
-
-    } catch (error) {
-        next(error)
-    }
-}
+})
 
 //  @descripcion        Crea un Bootcamp
 //  @ruta / route       POST api/vi/bootcamps
 //  @acceso             Privada
-exports.createBootcamp = async (req, res, next) => {
-    try {
+exports.createBootcamp = asyncHandler( async (req, res, next) => {
         const bootcamp = await Bootcamp.create(req.body);
         res
         .status(201)
@@ -55,17 +45,13 @@ exports.createBootcamp = async (req, res, next) => {
             success: true,
             data: bootcamp
         })
-    } catch (error) {
-        next(error)
-    }
-}
+});
 
 //  @descripcion        Modifica un bootcamp
 //  @ruta / route       PUT api/vi/bootcamps/:id
 //  @acceso             Privada
-exports.updateBootcamps = async (req, res, next) => {
+exports.updateBootcamps = asyncHandler( async (req, res, next) => {
     const { id } = req.params;
-    try {
         const bootcamp = await Bootcamp.findByIdAndUpdate(id, req.body, {
             new: true,
             runValidators: true
@@ -73,25 +59,20 @@ exports.updateBootcamps = async (req, res, next) => {
         if(!bootcamp){
             return next(new ErrorResponse(`Bootcamp no encontrado, id: ${id}`, 404))
         }
-    
         res
         .status(200)
         .json({
             success: true,
             data: bootcamp
         })
-    } catch (error) {
-        next(error)
-    }
 
-}
+});
 
 //  @descripcion        Elimina un bootcamp
 //  @ruta / route       DELETE api/vi/bootcamps/:id
 //  @acceso             Privada
-exports.deleteBootcamps = async (req, res, next) => {
+exports.deleteBootcamps = asyncHandler( async (req, res, next) => {
     const { id } = req.params;
-    try {
         const bootcamp = await Bootcamp.findByIdAndDelete(id);
         
         if(!bootcamp){
@@ -102,7 +83,4 @@ exports.deleteBootcamps = async (req, res, next) => {
         .json({
             success: true
         })
-    } catch (error) {
-        next(error)
-    }
-}
+});
