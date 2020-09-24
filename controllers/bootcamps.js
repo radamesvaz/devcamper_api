@@ -4,18 +4,47 @@ const Bootcamp = require('../models/Bootcamp');
 const geocoder = require('../utils/geocoder');
 
 
-//  @descripcion        Muestra todos los bootcamps
+//  @descripcion        Muestra todos los bootcamps // Queries avanzados
 //  @ruta / route       GET api/v1/bootcamps
 //  @acceso             Publica
 exports.getBootcamps = asyncHandler( async (req, res, next) => {
     let query;
 
-    let queryStr = JSON.stringify(req.query);
+    // Copiando el req.query
+    const reqQuery = { ...req.query };
 
+    // Arreglo donde colocamos las excepciones que no queremos salgan en el req.query
+    const removeFields = ['select', 'sort'];
+
+    // Iterando sobre el arreglo removeFields y eliminamos los valores de reqQuery
+    removeFields.forEach(param => delete reqQuery[param]);
+
+    // Creando un string del query
+    let queryStr = JSON.stringify(reqQuery);
+
+    // el signo de $ antes de los matches es para que coincida con una sintaxis especial de mongoose
     queryStr = queryStr.replace(/\b(gt|gte|lt|lte|in)\b/g, match  => `$${match}`);
 
+    // Buscando los recursos
     query = Bootcamp.find(JSON.parse(queryStr));
 
+    // --- Filtrando con el RemoveFields
+    // SELECT
+    if(req.query.select){
+        const fields = req.query.select.split(',').join(' ');
+        query = query.select(fields)
+    }
+
+    // SORT
+    if(req.query.sort){
+        const sortBy = req.query.sort.split(',').join(' ');
+        query = query.sort(sortBy);
+    }else{
+        query = query.sort('-createdAt');
+    }
+
+
+    // Ejecutando el query
         const bootcamp = await query;
         res
         .status(200)
