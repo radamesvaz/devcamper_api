@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+
 
 // Llamando a los controladores
 const{
@@ -10,6 +10,15 @@ const{
     updateBootcamps,
     deleteBootcamps
 } = require('../controllers/bootcamps');
+
+const courseRouter = require('./courses');
+
+const router = express.Router();
+
+//  Redireccionando a otros routers
+router.use('/:bootcampId/courses', courseRouter)
+
+
 
 // Estableciendo las direcciones
 
