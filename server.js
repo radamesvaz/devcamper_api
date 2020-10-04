@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const colors = require('colors');
 
+//  git desde nueva maquina
 
 // Cargando env vars
 dotenv.config({ path: './config/config.env' });
