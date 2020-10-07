@@ -14,7 +14,13 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
             bootcamp: req.params.bootcampId
         })
     } else {
-        query = Course.find();
+        query = Course.find().populate('bootcamp');
+        /*      De esta manera para filtrar los campos que queremos solamente
+        query = Course.find().populate({
+            path: 'bootcamp',
+            select: 'name careers phone'
+        });
+        */
     }
 
     const courses = await query;
