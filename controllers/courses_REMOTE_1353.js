@@ -8,19 +8,30 @@ const Bootcamp = require('../models/Bootcamp');
 //  @ruta / route       GET api/v1/bootcamps/:bootcampId/courses
 //  @acceso             Publica
 exports.getCourses = asyncHandler(async (req, res, next) => {
+    let query;
+
     if(req.params.bootcampId){
-        const courses = await Course.find({
+        query = Course.find({
             bootcamp: req.params.bootcampId
         })
-
-        res.status(200).json({
-            success: true,
-            cunt: courses.length,
-            data: courses
-        })
     } else {
-        res.status(200).json(res.advancedResults)
+        query = Course.find().populate('bootcamp');
+        /*      De esta manera para filtrar los campos que queremos solamente
+        query = Course.find().populate({
+            path: 'bootcamp',
+            select: 'name careers phone'
+        });
+        */
     }
+
+    const courses = await query;
+
+    res.status(200).json({
+        success: true,
+        count: courses.length,
+        data: courses
+    })
+
 })
 
 //  @descripcion        Muestra un curso según su ID

@@ -21,6 +21,18 @@ exports.getCourses = asyncHandler(async (req, res, next) => {
     } else {
         res.status(200).json(res.advancedResults)
     }
+
+<<<<<<< HEAD
+})
+=======
+    const courses = await query;
+
+    res.status(200).json({
+        success: true,
+        count: courses.length,
+        data: courses
+    })
+
 })
 
 //  @descripcion        Muestra un curso según su ID
@@ -106,3 +118,4 @@ exports.deleteCourse = asyncHandler(async (req, res, next) => {
 
 });
 
+>>>>>>> 8cc61de76ea26a3a7c7f04241f61e29d0e92f936

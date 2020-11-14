@@ -6,12 +6,24 @@ const advancedResults = require('../middleware/advancedResults');
 
 // Llamando a los controladores
 const{
-    getCourses
+    getCourses,
+    getCourse,
+    addCourse,
+    updateCourse,
+    deleteCourse
 } = require('../controllers/courses');
 
-router.route('/').get(advancedResults(Course, {
+router.route('/')
+    .get(advancedResults(Course, {
         path: 'bootcamp',
         select: 'name careers phone'
-    }), getCourses);
+    }), getCourses)
+    .post(addCourse);
+
+
+router.route('/:id')
+    .get(getCourse)
+    .put(updateCourse)
+    .delete(deleteCourse)
 
 module.exports = router;
