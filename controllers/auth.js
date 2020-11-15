@@ -1,0 +1,10 @@
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
+const User = require('../models/User');
+
+//  @descripcion        Registro de un usuario
+//  @ruta / route       POST api/v1/auth/register
+//  @acceso             Publica
+exports.register = asyncHandler(async (req, res, next) => {
+    res.status(200).json({success:true})
+})

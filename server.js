@@ -17,6 +17,7 @@ connectDB();
 // Llamando al rauter
 const bootcamps = require('./routers/bootcamps')
 const courses = require('./routers/courses');
+const auth = require('./routers/auth');
 
 
 const app = express();
@@ -33,6 +34,8 @@ if(process.env.NODE_ENV === 'development'){
 app.use('/api/v1/bootcamps', bootcamps);
 // Cursos
 app.use('/api/v1/courses', courses);
+// Auth
+app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
 
