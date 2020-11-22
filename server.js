@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const colors = require('colors');
+const cookieParser = require('cookie-parser');
 
 //  git desde nueva maquina
 
@@ -23,6 +24,9 @@ const auth = require('./routers/auth');
 const app = express();
 
 app.use(express.json());
+
+//  Cookie parser
+app.use(cookieParser());
 
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
