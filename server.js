@@ -39,7 +39,7 @@ app.use('/api/v1/auth', auth);
 
 app.use(errorHandler);
 
- 
+
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(
