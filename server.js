@@ -1,10 +1,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const path = require('path');
 const morgan = require('morgan')
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 const colors = require('colors');
 const cookieParser = require('cookie-parser');
+const fileupload = require('express-fileupload');
 
 //  git desde nueva maquina
 
@@ -31,6 +33,12 @@ app.use(cookieParser());
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 }
+
+//  subida de archivos
+app.use(fileupload());
+
+//  colocando la carpeta estatica
+app.use(express.static(path.join(__dirname, 'public')));
 
 //----- Montando el router
 
