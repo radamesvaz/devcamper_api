@@ -46,6 +46,19 @@ exports.login = asyncHandler(async (req, res, next) => {
 });
 
 
+//  @descripcion        Buscar el usuario ingresado actualmente
+//  @ruta / route       POST api/v1/auth/me
+//  @acceso             private
+exports.getMe = asyncHandler(async (req, res, next) => {
+    const id = req.user.id;
+
+    user = await User.findById(id);
+
+    res.status(200).json({
+        success: true,
+        data: user
+    })
+})
 
 
 //  Obteniendo el token, creando un cookie y enviando la respuesta
